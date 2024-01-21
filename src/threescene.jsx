@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 
+const clock = new THREE.Clock();
 
 const ThreeScene = () => {
     const mountRef = useRef(null);
@@ -16,11 +17,62 @@ const ThreeScene = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         mountRef.current.appendChild(renderer.domElement);
 
+        let moveForward = false;
+        let moveBackward = false;
+        let moveLeft = false;
+        let moveRight = false;
+
+        const velocity = new THREE.Vector3();
+
+        const onKeyDown = (event) => {
+            switch (event.code) {
+                case 'ArrowUp':
+                case 'KeyW':
+                    moveForward = true;
+                    break;
+                case 'ArrowLeft':
+                case 'KeyA':
+                    moveLeft = true;
+                    break;
+                case 'ArrowDown':
+                case 'KeyS':
+                    moveBackward = true;
+                    break;
+                case 'ArrowRight':
+                case 'KeyD':
+                    moveRight = true;
+                    break;
+            }
+        };
+
+        const onKeyUp = (event) => {
+            switch (event.code) {
+                case 'ArrowUp':
+                case 'KeyW':
+                    moveForward = false;
+                    break;
+                case 'ArrowLeft':
+                case 'KeyA':
+                    moveLeft = false;
+                    break;
+                case 'ArrowDown':
+                case 'KeyS':
+                    moveBackward = false;
+                    break;
+                case 'ArrowRight':
+                case 'KeyD':
+                    moveRight = false;
+                    break;
+            }
+        };
+
         // Set up PointerLockControls
         const controls = new PointerLockControls(camera, document.body);
 
         // Event listener to lock pointer on click
         document.addEventListener('click', () => controls.lock());
+        document.addEventListener('keydown', onKeyDown);
+        document.addEventListener('keyup', onKeyUp);
 
         // Lighting
         const ambientLight = new THREE.AmbientLight(0x404040);
@@ -87,6 +139,19 @@ const ThreeScene = () => {
             requestAnimationFrame(animate);
             // controls.update(); // Only required if controls.enableDamping = true
             // Update orb rotation or other animations here
+            const delta = clock.getDelta(); // Get the time difference
+
+            velocity.x -= velocity.x * 10.0 * delta;
+            velocity.z -= velocity.z * 10.0 * delta;
+
+            if (moveForward) velocity.z -= 400.0 * delta;
+            if (moveBackward) velocity.z += 400.0 * delta;
+            if (moveLeft) velocity.x -= 400.0 * delta;
+            if (moveRight) velocity.x += 400.0 * delta;
+
+            controls.moveRight(-velocity.x * delta);
+            controls.moveForward(-velocity.z * delta);
+
             renderer.render(scene, camera);
         };
         animate();
@@ -103,6 +168,9 @@ const ThreeScene = () => {
             window.removeEventListener('resize', onWindowResize);
             mountRef.current.removeChild(renderer.domElement);
             // Perform additional cleanup if necessary
+            // Remove event listeners on cleanup
+            document.removeEventListener('keydown', onKeyDown);
+            document.removeEventListener('keyup', onKeyUp);
         };
     }, []);
 
