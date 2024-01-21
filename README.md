@@ -2,7 +2,7 @@
 
 # Mars Hackathon 2024
 
-![Mars Hackathon 2024](mars_hackathon_banner.jpg)
+![Mars Hackathon 2024](src/assets/mh24.jpg)
 
 **Tags:** `#mars` `#hackathon` `#threejs` `#worlding` `#2024`
 
@@ -105,7 +105,24 @@ recast-navigation-js
     
     Some key aspects i'd like to see beyond basic navigation and artifact engagment is, obviously, an agent (character) inhabiting the space.
 
-    Dev op's Day2:!!!
+    ## Dev op's Day2:!!!
+**dev-ops:**
+
+    my-react-app/
+├── node_modules/
+├── public/
+│   ├── index.html
+│   └── ... (other public assets)
+├── src/
+│   ├── main.jsx (or index.js)
+│   ├── App.jsx (or App.js)
+│   ├── ... (other source files)
+│   └── ... (additional directories as needed)
+├── package.json
+├── vite.config.js (or other configuration files)
+└── ... (other configuration and root-level files)
+
+    
     The initial concept is close to whats about to happen...
     Revisioned the concept with 3 key objectives: 
 
@@ -226,6 +243,8 @@ If you encounter issues, consult the Three.js documentation and community forums
 Remember to commit your changes to version control regularly.
 Now that your environment is set up with Vite, you can leverage its fast build times and hot module replacement to efficiently develop your Three.js application.
 
+
+Notes: night2
 
 
 
