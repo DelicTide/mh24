@@ -1,12 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 
-
-
-// // At the top of your component, after importing THREE
-// const textureLoader = new THREE.TextureLoader();
 
 const ThreeScene = () => {
     const mountRef = useRef(null);
@@ -19,7 +16,13 @@ const ThreeScene = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         mountRef.current.appendChild(renderer.domElement);
 
-                // Lighting
+        // Set up PointerLockControls
+        const controls = new PointerLockControls(camera, document.body);
+
+        // Event listener to lock pointer on click
+        document.addEventListener('click', () => controls.lock());
+
+        // Lighting
         const ambientLight = new THREE.AmbientLight(0x404040);
         scene.add(ambientLight);
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -51,10 +54,10 @@ const ThreeScene = () => {
         const starField = new THREE.Points(starsGeometry, starsMaterial);
         scene.add(starField);
 
-          // Add OrbitControls
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true; // Optional, but this gives a smoother control feel
-        controls.dampingFactor = 0.1;
+        //   // Add OrbitControls
+        // const controls = new OrbitControls(camera, renderer.domElement);
+        // controls.enableDamping = true; // Optional, but this gives a smoother control feel
+        // controls.dampingFactor = 0.1;
 
 
         // // Inside your useEffect, before creating the orbMaterial
@@ -71,22 +74,29 @@ const ThreeScene = () => {
         // const orb = new THREE.Mesh(orbGeometry, orbMaterial);
         // scene.add(orb);
 
-        // Resize Listener
-        const onWindowResize = () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        };
-        window.addEventListener('resize', onWindowResize);
+        // // Resize Listener, replaced w/ #'handle resize'
+        // const onWindowResize = () => {
+        //     camera.aspect = window.innerWidth / window.innerHeight;
+        //     camera.updateProjectionMatrix();
+        //     renderer.setSize(window.innerWidth, window.innerHeight);
+        // };
+        // window.addEventListener('resize', onWindowResize);
 
         // Animation Loop
         const animate = () => {
             requestAnimationFrame(animate);
-            controls.update(); // Only required if controls.enableDamping = true
+            // controls.update(); // Only required if controls.enableDamping = true
             // Update orb rotation or other animations here
             renderer.render(scene, camera);
         };
         animate();
+
+          // Handle resize
+          window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
         // Cleanup
         return () => {
