@@ -80,14 +80,30 @@ const ThreeScene = () => {
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
         scene.add(directionalLight);
 
-        // GLTF Loader
+        // // GLTF Loader
+        // const loader = new GLTFLoader();
+        // loader.load('src/assets/3dobjects/Night+Sky+Futuristic.glb', (gltf) => {
+        //     console.log("Model loaded successfully", gltf);
+        //     scene.add(gltf.scene);
+        // }, undefined, (error) => {
+        //     console.error("Error loading model: ", error);
+        // });
+
+         // Load and position your models
         const loader = new GLTFLoader();
-        loader.load('src/assets/3dobjects/Night+Sky+Futuristic.glb', (gltf) => {
-            console.log("Model loaded successfully", gltf);
-            scene.add(gltf.scene);
-        }, undefined, (error) => {
-            console.error("Error loading model: ", error);
-        });
+        const models = [
+          { url: 'src/assets/3dobjects/Night+Sky+Futuristic.glb', position: new THREE.Vector3(0, 0, 0) },
+          { url: 'frontend/src/assets/3dobjects/free-bread-pack-cs2/source/bread pack.glb', position: new THREE.Vector3(5, 0, 0) },
+          { url: 'frontend/src/assets/3dobjects/nightmare_foxy_port_by_me.glb', position: new THREE.Vector3(5, 10, 0) },
+      // Add more models as needed
+        ];
+
+    models.forEach(model => {
+      loader.load(model.url, (gltf) => {
+        gltf.scene.position.copy(model.position);
+        scene.add(gltf.scene);
+      });
+    }); 
 
         // Camera Position
         camera.position.z = 5;
