@@ -6,6 +6,9 @@ todo: fix readmes and add instructions for building from my gits.
 
 ![Mars Hackathon 2024](frontend/src/assets/mh24.jpg)
 
+![worlding](frontend/src/assets/mh24001.png)
+![what it looks like](frontend/src/assets/mh240001.png)
+
 **Tags:** `#mars` `#hackathon` `#threejs` `#worlding` `#2024`
 
 ---
